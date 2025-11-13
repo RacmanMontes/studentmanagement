@@ -1,0 +1,1 @@
+<img src="{{ asset('images/login-logo.png') }}" alt="Logo"  style="height: 300px; margin: top -50px; margin-bottom:-90px;">
