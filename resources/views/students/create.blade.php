@@ -28,25 +28,21 @@
     </div>
 @endif
 
-
-<div class="container py-5" style="margin-top:-50px;">
+<div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card shadow-sm border-2">
-                <div class="card shadow-sm border-2">
-                    <div class="card-header bg-dark text-light text-center">
-                        <h3 class="mb-0">Student Registration Form</h3>
-                    </div>
+            <div class="card shadow-sm rounded-4">
+                <div class="card-header bg-dark text-light text-center">
+                    <h3 class="mb-0">Student Registration Form</h3>
                 </div>
-
                 <div class="card-body bg-dark text-light">
+
                     <form action="{{ route('students.store') }}" method="POST">
                         @csrf
 
-                        <h5 class="mb-3" >Personal Information</h5>
+                        {{-- Personal Information --}}
+                        <h5 class="mb-3">Personal Information</h5>
                         <div class="row g-3 mb-4">
-                        
-
                             <div class="col-md-4">
                                 <label for="first_name" class="form-label">First Name</label>
                                 <input type="text" name="first_name" id="first_name" class="form-control" required>
@@ -83,7 +79,7 @@
                             </div>
                         </div>
 
-                      
+                        {{-- Contact Information --}}
                         <h5 class="mb-3">Contact Information</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
@@ -100,7 +96,7 @@
                             </div>
                         </div>
 
-                       
+                        {{-- Academic Information --}}
                         <h5 class="mb-3">Academic Information</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
@@ -112,28 +108,66 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label for="subjectSelect" class="form-label">Subjects</label>
-                                <select name="subjects[]" id="subjectSelect" class="form-select" multiple>
-                                    <option value="" disabled hidden>Select Subject</option>
-                                    @foreach ($subjects as $subject)
-                                        <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="form-text">Hold Ctrl (Cmd on Mac) to select multiple subjects</div>
+
+                            <div >
+                                <label class="form-label">Subjects</label>
+                                <div id="subjectsContainer" class="row g-2">
+                                    
+                                </div>
+                                <div class="form-text">Check the subjects for the selected course</div>
                             </div>
                         </div>
 
-                      
-                        <div class="d-flex justify-content-center gap-2" >
+                        <div class="d-flex justify-content-center gap-2">
                             <a href="{{ route('students.index') }}" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>
 
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<script>
+document.getElementById('courseSelect').addEventListener('change', function() {
+    let courseId = this.value;
+    const container = document.getElementById('subjectsContainer');
+    container.innerHTML = ''; 
+
+    if (!courseId) return;
+
+    fetch(`/courses/${courseId}/subjects`) 
+        .then(res => res.json())
+        .then(subjects => {
+            if(subjects.length === 0){
+                container.innerHTML = '<div class="col-12"><p class="text-muted">No subjects available for this course.</p></div>';
+            } else {
+                subjects.forEach(subject => {
+                    container.innerHTML += `
+                    <div class="col-6">
+                        <div>
+                            <input style="margin:20px; " class="form-check-input" type="checkbox" name="subjects[]" value="${subject.id}" id="subject-${subject.id}">
+                            <label class="form-check-label fw-medium ms-2" for="subject-${subject.id}" >
+                                ${subject.subject_name}
+                            </label>
+                        </div>
+                    </div>`;
+                });
+            }
+        });
+});
+</script>
+
+{{-- Optional Hover Shadow --}}
+<style>
+.hover-shadow:hover {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+</style>
+
 @endsection

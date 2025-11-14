@@ -114,8 +114,8 @@
                         <div class="student-actions no-print mt-2" >
                             <a href="{{ route('students.show', $student->id) }}" class="btn btn-info btn-sm">View</a>
                             <a href="{{ route('students.edit', $student->id) }}" class="btn btn-warning btn-sm text-whie">Edit</a>
-                             <a href="" class="btn btn-success btn-sm text-white">Add</a>
-                              <a href="" class="btn btn-danger btn-sm text-white">Drop</a>
+                             <a href="{{ route('students.subjects.add.form', $student->id) }}" class="btn btn-success btn-sm text-white">Add</a>
+                              <a href="{{ route('students.subjects.drop.form', $student->id) }}" class="btn btn-danger btn-sm text-white">Drop</a>
                            
                         </div>
 

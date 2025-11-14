@@ -75,7 +75,7 @@
     </div>
 
     @if ($subjects->hasPages())
-        <div class="pagination-wrapper" style="margin-right:45%;">
+        <div class="pagination-wrapper" style="margin-right:35%;">
             {{ $subjects->links('pagination::bootstrap-5') }}
         </div>
     @endif

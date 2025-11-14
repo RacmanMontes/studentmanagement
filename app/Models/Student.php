@@ -45,5 +45,9 @@ class Student extends Model
         {
             return $this->belongsToMany(Subject::class, 'student_subjects');
         }
+        public function activityLogs()
+        {
+            return $this->hasMany(ActivityLog::class);
+        }
 
 }
